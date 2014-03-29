@@ -1,6 +1,7 @@
 
 package com.bfc.methods;
 
+import com.bfc.crafting.spinning.jobs.Spin;
 import java.util.concurrent.Callable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;

@@ -3,7 +3,9 @@ package com.bfc.crafting.spinning.jobs;
 
 import com.bfc.Task;
 import com.bfc.constants.Items;
+import com.bfc.methods.WidgetClick;
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.wrappers.GameObject;
 
 /**
  * @package com.bfc.crafting.spinning.jobs
@@ -25,5 +27,11 @@ public class Spin extends Task {
 
     @Override
     public void execute() {
+        GameObject spinner = ctx.objects.id(36970).nearest().poll();
+        if(!spinner.isInViewport()) {
+            ctx.movement.stepTowards(spinner.getLocation());
+        }
+        spinner.interact("Spin", "Spinning wheel");
+        new WidgetClick(ctx).click(1370, 38, false, 3);
     }
 }
