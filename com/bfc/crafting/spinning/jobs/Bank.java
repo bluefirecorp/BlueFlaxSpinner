@@ -5,11 +5,12 @@ import com.bfc.Task;
 import com.bfc.constants.Items;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.GameObject;
+import org.powerbot.script.wrappers.Tile;
 
 /**
  * @package com.bfc.crafting.spinning.jobs
  * @class Bank
- * @version 1.0
+ * @version 1.02
  * @author bluefirecorp
  * @date Mar 29, 2014
  */
@@ -20,22 +21,27 @@ public class Bank extends Task {
 
     @Override
     public boolean activate() {
-        return (!ctx.backpack.contains(ctx.backpack.select().id(Items.FLAX.getItemID()).poll())
-                && ctx.objects.id(36786).nearest().poll().getLocation().distanceTo(ctx.players.local().getLocation()) > 30);
+        return (ctx.backpack.select().id(Items.FLAX.getItemID()).count() == 0 &&
+                ctx.players.local().getLocation().plane == 2 && !ctx.players.local().isInMotion())                
+                || (ctx.bank.isOpen());
     }
 
     @Override
     public void execute() {
-        if(ctx.bank.isOpen()) {
-            GameObject booth = ctx.objects.id(36786).nearest().poll();
+        if(!ctx.bank.isOpen()) {
+            GameObject booth = ctx.objects.select().id(36786).nearest().poll();
             if(!booth.isInViewport()) {
-                ctx.movement.stepTowards(booth);
+                ctx.movement.findPath(new Tile(3209, 3220)).traverse();
             }
-            booth.interact("Bank", "Bank Booth");
-        } else {
-            ctx.bank.depositInventory();
-            //xxx Bank.Amount.ALL doesn't seem to work 
-            ctx.bank.withdraw(Items.FLAX.getItemID(), 28); 
+        } else if(ctx.bank.isOpen()
+                && ctx.backpack.select().id(Items.FLAX.getItemID()).count() != 0) {
+            ctx.bank.close();
+            return;
+        }
+        if(ctx.bank.open()) {
+                ctx.bank.depositInventory();
+                ctx.bank.withdraw(Items.FLAX.getItemID(), 28);
+                ctx.bank.close();
         }
     }
 }

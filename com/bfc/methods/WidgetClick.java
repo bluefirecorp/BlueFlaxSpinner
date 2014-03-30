@@ -1,7 +1,6 @@
 
 package com.bfc.methods;
 
-import com.bfc.crafting.spinning.jobs.Spin;
 import java.util.concurrent.Callable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
@@ -9,7 +8,7 @@ import org.powerbot.script.util.Condition;
 /**
  * @package com.bfc.methods
  * @class Widgets
- * @version 1.0
+ * @version 1.00
  * @author bluefirecorp
  * @date Mar 27, 2014
  */
@@ -23,7 +22,7 @@ public class WidgetClick extends MethodProvider {
     private int compID;
     private boolean left;
     private String interact;  
-    
+
     public boolean click(int interfaceID, int componentID, boolean clickLeft,
             int tries, int freq) {
         intID = interfaceID;
@@ -41,11 +40,11 @@ public class WidgetClick extends MethodProvider {
     }
     
     public boolean click(int interfaceID, int componentID) {
-        return click(interfaceID, componentID, false, 600, 1);
+        return click(interfaceID, componentID, true, 600, 1);
     }
     public boolean click(int interfaceID, int componentID, 
             boolean clickLeft) {
-        return click(interfaceID, componentID, false);
+        return click(interfaceID, componentID, true);
     }
     public boolean click(int interfaceID, int componentID, 
             boolean clickLeft, int tries) {
